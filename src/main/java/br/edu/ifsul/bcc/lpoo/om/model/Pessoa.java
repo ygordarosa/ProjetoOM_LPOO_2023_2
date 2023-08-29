@@ -16,6 +16,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 /**
  *
@@ -44,7 +45,10 @@ public abstract class Pessoa implements Serializable {
     
     @Column(nullable = false, length = 100)
     private String complemento;
-    
+    /*
+    @Transient
+    private String tipo;
+    */
     public Pessoa() {
     }
 

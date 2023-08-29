@@ -6,9 +6,14 @@
 package br.edu.ifsul.bcc.lpoo.om.model;
 
 import java.util.Calendar;
+import java.util.Collection;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -18,6 +23,7 @@ import javax.persistence.TemporalType;
  * @author Ygor
  */
 @Entity
+@Table(name = "tb_funcionario")
 @DiscriminatorValue("F")
 public class Funcionario extends Pessoa {
 
@@ -25,12 +31,21 @@ public class Funcionario extends Pessoa {
     private String numero_ctps;
 
     @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Calendar data_admissao;
 
     @Column(nullable = true)
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Calendar data_demissao;
+    
+    @ManyToOne
+    @JoinColumn(name = "cargo_id", nullable = false)
+    private Cargo cargo;
+    
+     @ManyToMany
+    @JoinTable(name = "tb_funcionario_curso", joinColumns = {@JoinColumn(name = "funcionario_cpf")}, //agregacao, vai gerar uma tabela associativa.
+                                       inverseJoinColumns = {@JoinColumn(name = "curso_id")})  
+    private Collection<Curso> curso;
 
     public Funcionario() {
     }
@@ -76,5 +91,33 @@ public class Funcionario extends Pessoa {
      */
     public void setData_demissao(Calendar data_demissao) {
         this.data_demissao = data_demissao;
+    }
+
+    /**
+     * @return the cargo
+     */
+    public Cargo getCargo() {
+        return cargo;
+    }
+
+    /**
+     * @param cargo the cargo to set
+     */
+    public void setCargo(Cargo cargo) {
+        this.cargo = cargo;
+    }
+
+    /**
+     * @return the curso
+     */
+    public Collection<Curso> getCurso() {
+        return curso;
+    }
+
+    /**
+     * @param curso the curso to set
+     */
+    public void setCurso(Collection<Curso> curso) {
+        this.curso = curso;
     }
 }
