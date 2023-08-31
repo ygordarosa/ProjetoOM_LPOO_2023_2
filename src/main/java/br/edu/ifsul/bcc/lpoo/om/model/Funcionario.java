@@ -5,6 +5,7 @@
  */
 package br.edu.ifsul.bcc.lpoo.om.model;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import javax.persistence.Column;
@@ -119,5 +120,12 @@ public class Funcionario extends Pessoa {
      */
     public void setCurso(Collection<Curso> curso) {
         this.curso = curso;
+    }
+    
+    public void setCursos(Curso curso){
+        if(this.curso == null){
+            this.curso = new ArrayList();
+        }
+        this.curso.add(curso);
     }
 }
