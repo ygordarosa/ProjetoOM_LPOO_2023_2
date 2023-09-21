@@ -6,6 +6,7 @@
 package br.edu.ifsul.bcc.lpoo.om.model.dao;
 
 import br.edu.ifsul.bcc.lpoo.om.model.Cargo;
+import br.edu.ifsul.bcc.lpoo.om.model.Funcionario;
 import java.util.Collection;
 
 /**
@@ -21,4 +22,5 @@ public interface InterfacePersistence {
     public void remover(Object o) throws Exception;//delete.
     
     public Collection<Cargo> listCargo () throws Exception;
+    public Collection<Funcionario> listFuncionario () throws Exception;
 }
