@@ -33,7 +33,7 @@ public class Veiculo implements Serializable {
     
     @Column(nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
-    private Calendar dataUltimoServico;
+    private Calendar data_ultimo_servico;
 
     public Veiculo() {
     }
@@ -84,14 +84,14 @@ public class Veiculo implements Serializable {
      * @return the dataUltimoServico
      */
     public Calendar getDataUltimoServico() {
-        return dataUltimoServico;
+        return data_ultimo_servico;
     }
 
     /**
      * @param dataUltimoServico the dataUltimoServico to set
      */
     public void setDataUltimoServico(Calendar dataUltimoServico) {
-        this.dataUltimoServico = dataUltimoServico;
+        this.data_ultimo_servico = dataUltimoServico;
     }
     
     

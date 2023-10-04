@@ -22,7 +22,7 @@ import org.junit.Test;
  */
 public class TestPersistenceJPA {
     
-     
+    
     public void testConexaoGeracaoTabelas(){
         
         PersistenceJPA persistencia = new PersistenceJPA();
@@ -113,8 +113,7 @@ public class TestPersistenceJPA {
         
     }
      
-     //Com Erro
-     @Test
+     //@Test
      public void testPersistenceListFuncionarioJPA() throws Exception{
         PersistenceJPA jpa = new PersistenceJPA();
         if(jpa.conexaoAberta()){

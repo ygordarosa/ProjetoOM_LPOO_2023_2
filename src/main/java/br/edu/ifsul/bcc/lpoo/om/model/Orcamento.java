@@ -30,19 +30,19 @@ import javax.persistence.TemporalType;
 @Table(name = "tb_orcamento")
 public class Orcamento implements Serializable {
     @Id
-    @SequenceGenerator(name = "seq_servico", sequenceName = "seq_endereco_id", allocationSize = 1)
-    @GeneratedValue(generator = "seq_servico", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "seq_orcamento", sequenceName = "seq_orcamento_id", allocationSize = 1)
+    @GeneratedValue(generator = "seq_orcamento", strategy = GenerationType.SEQUENCE)
     private Integer id;
     
-    @Column(nullable = true, length = 150)
+    @Column(nullable = true, length = 100)
     private String observacoes;
     
     @Column(nullable = false)
     @Temporal(TemporalType.DATE)
-    private Calendar dataOrcamento;
+    private Calendar data;
     
     @ManyToMany
-     @JoinTable(name = "tb_orcamento_maoObra", joinColumns = {@JoinColumn(name = "orcamento_id")}, 
+     @JoinTable(name = "tb_orcamento_maoobra", joinColumns = {@JoinColumn(name = "orcamento_id")}, 
             inverseJoinColumns = {@JoinColumn(name = "maoObra_id")})
     private Collection<MaoObra> maoObra;
     
@@ -98,14 +98,14 @@ public class Orcamento implements Serializable {
      * @return the dataOrcamento
      */
     public Calendar getDataOrcamento() {
-        return dataOrcamento;
+        return data;
     }
 
     /**
      * @param dataOrcamento the dataOrcamento to set
      */
     public void setDataOrcamento(Calendar dataOrcamento) {
-        this.dataOrcamento = dataOrcamento;
+        this.data = dataOrcamento;
     }
 
     /**

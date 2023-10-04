@@ -32,7 +32,7 @@ import javax.persistence.TemporalType;
 @Table(name = "tb_servico")
 public class Servico implements Serializable{
     @Id
-    @SequenceGenerator(name = "seq_servico", sequenceName = "seq_endereco_id", allocationSize = 1)
+    @SequenceGenerator(name = "seq_servico", sequenceName = "seq_servicos_id", allocationSize = 1)
     @GeneratedValue(generator = "seq_servico", strategy = GenerationType.SEQUENCE)
     private Integer id;
     
@@ -48,7 +48,7 @@ public class Servico implements Serializable{
     private Calendar data_fim;
     
     @OneToMany(mappedBy = "servico")
-    private Collection<Pagamento> pagamento;
+    private Collection<Pagamento> parcelas;
     
     @ManyToOne
     @JoinColumn(name = "equipe_id", nullable = false)
@@ -60,7 +60,7 @@ public class Servico implements Serializable{
     
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private StatusServico statusServico;
+    private StatusServico status;
 
     public Servico() {
     }
@@ -127,14 +127,14 @@ public class Servico implements Serializable{
      * @return the pagamento
      */
     public Collection<Pagamento> getPagamento() {
-        return pagamento;
+        return parcelas;
     }
 
     /**
      * @param pagamento the pagamento to set
      */
     public void setPagamento(Collection<Pagamento> pagamento) {
-        this.pagamento = pagamento;
+        this.parcelas = pagamento;
     }
 
     /**
@@ -169,14 +169,14 @@ public class Servico implements Serializable{
      * @return the statusServico
      */
     public StatusServico getStatusServico() {
-        return statusServico;
+        return status;
     }
 
     /**
      * @param statusServico the statusServico to set
      */
     public void setStatusServico(StatusServico statusServico) {
-        this.statusServico = statusServico;
+        this.status = statusServico;
     }
     
 }
