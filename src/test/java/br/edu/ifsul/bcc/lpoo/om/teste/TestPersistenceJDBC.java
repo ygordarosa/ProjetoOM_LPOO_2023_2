@@ -6,8 +6,11 @@
 package br.edu.ifsul.bcc.lpoo.om.teste;
 
 import br.edu.ifsul.bcc.lpoo.om.model.Cargo;
+import br.edu.ifsul.bcc.lpoo.om.model.Curso;
+import br.edu.ifsul.bcc.lpoo.om.model.Funcionario;
 import br.edu.ifsul.bcc.lpoo.om.model.dao.PersistenceJDBC;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.Collection;
 import org.junit.Test;
 
@@ -62,7 +65,7 @@ public class TestPersistenceJDBC {
 
     }
 
-    @Test
+   // @Test
     public void testListCargoJDBC() throws Exception {
         PersistenceJDBC jdbc = new PersistenceJDBC();
         Collection<Cargo> crg = null;
@@ -120,6 +123,46 @@ public class TestPersistenceJDBC {
         jdbc.fecharConexao();
     }
     
+    
+   // @Test
+     public void testPersistFuncionarioJDBC() throws Exception {
+        PersistenceJDBC jdbc = new PersistenceJDBC();
+
+        if (jdbc.conexaoAberta()) {
+            Funcionario f = new Funcionario();
+            
+            f.setTipo("F");
+            f.setCpf("67241018088");
+            f.setCep("99020530");
+            f.setComplemento("Ao lado do antigo estádio delmar sitoni");
+            f.setData_nascimento(Calendar.getInstance());
+            f.setNome("Juliana da Rosa");
+            f.setSenha("bistoco");
+            f.setNumero_ctps("1234567899");
+            
+            Cargo c = new Cargo();
+            c.setDescricao("Dono");
+            jdbc.persist(c);
+            f.setCargo(c);
+            
+            Curso cur = new Curso();
+            cur.setCargaHoraria(160);
+            cur.setDescricao("curso de gestão");
+            cur.setDt_conclusao(Calendar.getInstance());
+            jdbc.persist(cur);
+            f.setCursos(cur);
+            jdbc.persist(f);
+            System.out.println("criado funcionario com sucesso");
+            
+            
+            f.setNome("teste123");
+            jdbc.persist(f);
+            System.out.println("atualizado funcionario com sucesso");
+
+            jdbc.fecharConexao();
+        }
+
+    }
         // Atividade 28/09
     /*
         Criar um método de teste para funcionario

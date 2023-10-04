@@ -20,6 +20,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 /**
  *
@@ -28,7 +29,7 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "tb_funcionario")
 @DiscriminatorValue("F")
-@NamedQueries({@NamedQuery(name="Funcionario.orderbycpf", query="select f from Funcionario f order by f.cpf asc")})
+@NamedQueries({@NamedQuery(name="Funcionario.orderbynome", query="select f from Funcionario f order by f.nome asc")})
 
 public class Funcionario extends Pessoa {
 
@@ -37,7 +38,7 @@ public class Funcionario extends Pessoa {
 
     @Column(nullable = false)
     @Temporal(TemporalType.DATE)
-    private Calendar data_admissao;
+    private Calendar data_admmissao;
 
     @Column(nullable = true)
     @Temporal(TemporalType.DATE)
@@ -51,6 +52,9 @@ public class Funcionario extends Pessoa {
     @JoinTable(name = "tb_funcionario_curso", joinColumns = {@JoinColumn(name = "funcionario_cpf")}, //agregacao, vai gerar uma tabela associativa.
                                        inverseJoinColumns = {@JoinColumn(name = "curso_id")})  
     private Collection<Curso> curso;
+     
+     
+     
 
     public Funcionario() {
     }
@@ -74,14 +78,14 @@ public class Funcionario extends Pessoa {
      * @return the data_admissao
      */
     public Calendar getData_admissao() {
-        return data_admissao;
+        return data_admmissao;
     }
 
     /**
      * @param data_admissao the data_admissao to set
      */
     public void setData_admissao(Calendar data_admissao) {
-        this.data_admissao = data_admissao;
+        this.data_admmissao = data_admissao;
     }
 
     /**
@@ -132,4 +136,8 @@ public class Funcionario extends Pessoa {
         }
         this.curso.add(curso);
     }
+
+  
+
+
 }

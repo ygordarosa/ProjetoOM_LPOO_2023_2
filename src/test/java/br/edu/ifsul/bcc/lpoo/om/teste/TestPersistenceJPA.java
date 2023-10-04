@@ -9,6 +9,7 @@ import br.edu.ifsul.bcc.lpoo.om.model.Cargo;
 import br.edu.ifsul.bcc.lpoo.om.model.Curso;
 import br.edu.ifsul.bcc.lpoo.om.model.Funcionario;
 import br.edu.ifsul.bcc.lpoo.om.model.dao.PersistenceJPA;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -113,24 +114,28 @@ public class TestPersistenceJPA {
     }
      
      //Com Erro
-     //@Test
+     @Test
      public void testPersistenceListFuncionarioJPA() throws Exception{
         PersistenceJPA jpa = new PersistenceJPA();
         if(jpa.conexaoAberta()){
              //Passo 1: recuperar a coleção de funcionario.
             Collection <Funcionario> f = jpa.listFuncionario();
             if(!(f.isEmpty())){
+                
+                SimpleDateFormat formatadorData = new SimpleDateFormat("dd/MM/yyyy");        
+
+                
                 System.out.println(f);
                 //Passo 2: caso a coleção não esteja vazia - imprimir (inclusive os cursos).
                 for(Funcionario fh : f){
                     System.out.println("Cpf: " + fh.getCpf());
                     System.out.println("Nome: " + fh.getNome());
                     System.out.println("Senha: " + fh.getSenha());
-                    System.out.println("Data de Nascimento: " + fh.getData_nascimento());
+                    System.out.println("Data de Nascimento: " + formatadorData.format(fh.getData_nascimento().getTime()));
                     System.out.println("Cep: " + fh.getCep());
                     System.out.println("Complemento: " + fh.getComplemento());
                     System.out.println("Numero CTPS: " + fh.getNumero_ctps());
-                    System.out.println("Data Admissao: " + fh.getData_admissao());
+                    System.out.println("Data Admissao: " + formatadorData.format(fh.getData_admissao().getTime()));
                     System.out.println("Cargo ID: " + (fh.getCargo()).getId());
                     System.out.println("Cargo Descricao: " + (fh.getCargo()).getDescricao());
                     Collection<Curso> cursos = fh.getCurso();
@@ -138,9 +143,15 @@ public class TestPersistenceJPA {
                         System.out.println("Curso ID: " + ch.getId());
                         System.out.println("Curso Descricao: " + ch.getDescricao());
                         System.out.println("Curso Carga Horaria: " + ch.getCargaHoraria());
-                        System.out.println("Curso DT conclusao: " + ch.getDt_conclusao());
+                        System.out.println("Curso DT conclusao: " + formatadorData.format(ch.getDt_conclusao().getTime()));
                     }
                 }
+                
+                for(Funcionario fh : f){
+                    System.out.println("removendo funcionario com cpf: " + fh.getCpf());
+                    jpa.remover(fh);
+                    }
+                
                 //Passo 3: caso a coleção esteja vazia, criar dois funcionarios com um Curso cada.
             }else {
                 System.out.println("2 Funcionarios criados");
@@ -155,13 +166,18 @@ public class TestPersistenceJPA {
                     fh.setData_admissao(Calendar.getInstance());
                     Cargo cargo = new Cargo();
                     cargo.setDescricao("abcde");
-                    cargo.setId(1);
+                    
+                    jpa.persist(cargo);
+                    
                     fh.setCargo(cargo);
+                    
+                    
                     Curso curso = new Curso();
                     curso.setDescricao("abcde");
                     curso.setCargaHoraria(300);
                     curso.setDt_conclusao(Calendar.getInstance());
-                    curso.setId(1);
+                    jpa.persist(curso);
+                    
                     Collection<Curso> cursos = new ArrayList();
                     cursos.add(curso);
                     fh.setCurso(cursos);
@@ -177,17 +193,20 @@ public class TestPersistenceJPA {
                     fa.setNumero_ctps("1234567891");
                     fa.setData_admissao(Calendar.getInstance());
                     Cargo cargo1 = new Cargo();
-                    cargo1.setDescricao("abcde");
-                    cargo1.setId(2);
+                    cargo1.setDescricao("abcdefg");
+                    jpa.persist(cargo1);
+                    
                     fa.setCargo(cargo1);
+                    
                     Curso curso1 = new Curso();
                     curso1.setDescricao("edcba");
                     curso1.setCargaHoraria(300);
                     curso1.setDt_conclusao(Calendar.getInstance());
-                    curso1.setId(2);
+                    jpa.persist(curso1);
+                    
                     Collection<Curso> cursos1 = new ArrayList();
                     cursos1.add(curso1);
-                    
+                    //persistir curso para não dar erro
                     fa.setCurso(cursos1);
                     jpa.persist(fa);
                 

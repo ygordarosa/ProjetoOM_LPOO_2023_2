@@ -45,10 +45,10 @@ public abstract class Pessoa implements Serializable {
     
     @Column(nullable = false, length = 100)
     private String complemento;
-    /*
+
     @Transient
     private String tipo;
-    */
+    
     public Pessoa() {
     }
 
@@ -136,5 +136,12 @@ public abstract class Pessoa implements Serializable {
         this.complemento = complemento;
     }
     
-    
+      public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
 }

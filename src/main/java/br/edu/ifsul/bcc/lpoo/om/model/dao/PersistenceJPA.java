@@ -68,7 +68,7 @@ public class PersistenceJPA implements InterfacePersistence{
     @Override
     public Collection<Funcionario> listFuncionario() throws Exception {
        
-        return  entity.createNamedQuery("Funcionario.orderbycpf").getResultList();
+        return  entity.createNamedQuery("Funcionario.orderbynome").getResultList();
         
     }
     
