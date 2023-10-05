@@ -280,7 +280,27 @@ public class PersistenceJDBC implements InterfacePersistence {
             ps.close();
 
         } else if (o instanceof Funcionario) {
-
+            
+            Funcionario f = (Funcionario) o;
+            
+            //removendo da tabela associativa primeiro
+            PreparedStatement ps1 = this.con.prepareStatement("delete from tb_funcionario_curso where funcionario_cpf = ?;");
+            ps1.setString(1, f.getCpf());
+            ps1.execute();
+            ps1.close();
+            
+            
+            //removendo linhas da tabela funcionario
+            PreparedStatement ps2 = this.con.prepareStatement("delete from tb_funcionario where cpf = ?;");
+            ps2.setString(1, f.getCpf());
+            ps2.execute();
+            ps2.close();
+            
+            //removendo linhas da tablea
+            PreparedStatement ps3 = this.con.prepareStatement("delete from tb_pessoa where cpf = ?;");
+            ps3.setString(1, f.getCpf());
+            ps3.execute();
+            ps3.close();
         }
     }
 
@@ -308,7 +328,81 @@ public class PersistenceJDBC implements InterfacePersistence {
 
     @Override
     public Collection<Funcionario> listFuncionario() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Collection<Funcionario> fcl = null;
+        
+        PreparedStatement ps = this.con.prepareStatement("select p.cpf, p.nome, p.senha, "
+                                                        + "p.data_nascimento, p.cep, p.complemento, f.numero_ctps, "
+                                                        + "f.data_admmissao, f.data_demissao, c.id, c.descricao "
+                                                        + "from tb_pessoa p, tb_funcionario f, tb_cargo c where "
+                                                        + "p.cpf = f.cpf and f.cargo_id = c.id order by cpf asc ");
+        
+        ResultSet rs = ps.executeQuery();
+        
+        fcl = new ArrayList();
+        
+        while(rs.next()){
+            Funcionario func = new Funcionario();
+            func.setCpf(rs.getString("cpf"));
+            func.setNome(rs.getString("nome"));
+            func.setSenha(rs.getString("senha"));
+            Calendar c = Calendar.getInstance();
+            c.setTimeInMillis(rs.getDate("data_nascimento").getTime());
+            func.setData_nascimento(c);
+            func.setCep(rs.getString("cep"));
+            func.setComplemento(rs.getString("complemento"));
+            func.setNumero_ctps(rs.getString("numero_ctps"));
+            c.setTimeInMillis(rs.getDate("data_admmissao").getTime());
+            func.setData_admissao(c);
+            if(rs.getDate("data_demissao") != null){
+                Calendar d = Calendar.getInstance();
+                d.setTimeInMillis(rs.getDate("data_demissao").getTime());
+                func.setData_demissao(d);
+            }
+            else {
+                func.setData_demissao(null);
+            }
+            
+            
+            Cargo carg = new Cargo();
+            carg.setId(rs.getInt("id"));
+            carg.setDescricao("descricao");
+            func.setCargo(carg);
+            
+            PreparedStatement ps2 = this.con.prepareStatement("select c.id, c.descricao, c.dt_conclusao, c.cargahoraria"
+                                                            + " from tb_curso c, tb_funcionario_curso tfc "
+                                                            + " where c.id = tfc.curso_id and "
+                                                            + "tfc.funcionario_cpf = ? order by c.id asc");
+            
+            ps2.setString(1, func.getCpf());
+            
+            ResultSet rs2 = ps2.executeQuery();
+            
+            while(rs2.next()){
+                Curso curs = new Curso();
+                
+                curs.setId(rs2.getInt("id"));
+                curs.setDescricao(rs2.getString("descricao"));
+                c.setTimeInMillis(rs2.getDate("dt_conclusao").getTime());
+                curs.setDt_conclusao(c);
+                curs.setCargaHoraria(rs2.getInt("cargahoraria"));
+                
+                func.setCursos(curs);
+                
+            }
+            rs2.close();
+            ps2.close();
+            
+            
+            
+            fcl.add(func);
+
+        }
+        rs.close();
+        
+        ps.close();
+        
+        
+        return fcl;
     }
 
 }

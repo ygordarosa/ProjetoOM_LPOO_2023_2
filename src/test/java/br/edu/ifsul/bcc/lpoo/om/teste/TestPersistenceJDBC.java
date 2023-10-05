@@ -124,7 +124,109 @@ public class TestPersistenceJDBC {
     }
     
     
-   // @Test
+
+        // Atividade 28/09
+    
+       // Criar um método de teste para funcionario
+    @Test
+    public void testListFuncionarioJDBC() throws Exception{
+        PersistenceJDBC jdbc = new PersistenceJDBC();
+        Collection<Funcionario> fcl = null;
+        if(jdbc.conexaoAberta()){
+        //Passo 1: recuperar a colecao de funcionarios
+
+            fcl = jdbc.listFuncionario();
+        //Passo 2: caso a coleção não esteja vazia - imprimir (inclusive os cursos),
+        //alterar e remover cada item.
+            if(!fcl.isEmpty()){
+                System.out.println("entrou");
+                
+                for(Funcionario f : fcl){
+                    System.out.println("Cpf: " + f.getCpf());
+                    System.out.println("Nome: " + f.getNome());
+                    System.out.println("Cep: " + f.getCep());
+                    System.out.println("Cargo id: " + f.getCargo().getId());
+                    System.out.println("Cargo descricao: " + f.getCargo().getDescricao());
+                    for(Curso curs : f.getCurso()){
+                        System.out.println("Curso id: " + curs.getId());
+                        System.out.println("Curso descricação: " + curs.getDescricao());
+                        System.out.println("curso  carga horária" + curs.getCargaHoraria());
+                    }
+                }
+                for(Funcionario f : fcl){
+                    f.setNome("outro nome");
+                    f.setCep("10203040");
+                    }
+                System.out.println("Dados alterados com sucesso");
+                for(Funcionario f : fcl){
+                    System.out.println("removendo o cpf: " + f.getCpf());
+                    jdbc.remover(f);
+                    }
+                }
+                else {
+                Funcionario f = new Funcionario();
+                Funcionario f1 = new Funcionario();
+                
+                f.setTipo("F");
+                f.setCpf("04960317086");
+                f.setNome("Ygor da Rosa da Rosa");
+                f.setData_nascimento(Calendar.getInstance());
+                f.setSenha("12345");
+                f.setCep("99020530");
+                f.setComplemento("estádio ao lado");
+                f.setNumero_ctps("1234567890");
+                
+                Cargo c = new Cargo();
+                c.setDescricao("estágiario");
+                jdbc.persist(c);
+                f.setCargo(c);
+                
+                Curso curs = new Curso();
+                curs.setDescricao("descrito");
+                curs.setCargaHoraria(190);
+                curs.setDt_conclusao(Calendar.getInstance());
+                jdbc.persist(curs);
+                f.setCursos(curs);
+                
+                jdbc.persist(f);
+                
+                System.out.println("Criado funcionario 1");
+                
+                f1.setTipo("F");
+                f1.setCpf("67241018087");
+                f1.setNome("Juliana da Rosa");
+                f1.setData_nascimento(Calendar.getInstance());
+                f1.setSenha("54321");
+                f1.setCep("99020530");
+                f1.setComplemento("estádio ao lado");
+                f1.setNumero_ctps("1234567890");
+                
+                Cargo c1 = new Cargo();
+                c1.setDescricao("dono");
+                jdbc.persist(c1);
+                f1.setCargo(c1);
+                
+                Curso curs1 = new Curso();
+                curs1.setDescricao("descri");
+                curs1.setCargaHoraria(190);
+                curs1.setDt_conclusao(Calendar.getInstance());
+                jdbc.persist(curs1);
+                f1.setCursos(curs1);
+                
+                jdbc.persist(f1);
+                
+                System.out.println("criado funcionario 2");
+                 
+                }
+            }
+            
+        }
+
+    
+         
+          //Passo 3: caso a coleção esteja vazia, criar dois funcionarios com um curso cada.
+    
+        //@Test
      public void testPersistFuncionarioJDBC() throws Exception {
         PersistenceJDBC jdbc = new PersistenceJDBC();
 
@@ -132,7 +234,7 @@ public class TestPersistenceJDBC {
             Funcionario f = new Funcionario();
             
             f.setTipo("F");
-            f.setCpf("67241018088");
+            f.setCpf("67241018089");
             f.setCep("99020530");
             f.setComplemento("Ao lado do antigo estádio delmar sitoni");
             f.setData_nascimento(Calendar.getInstance());
@@ -163,16 +265,6 @@ public class TestPersistenceJDBC {
         }
 
     }
-        // Atividade 28/09
-    /*
-        Criar um método de teste para funcionario
-            Passo 1: recuperar a colecao de funcionarios
-            Passo 2: caso a coleção não esteja vazia - imprimir (inclusive os cursos),
-            alterar e remover cada item.
-            Passo 3: caso a coleção esteja vazia, criar dois funcionarios com um curso cada.
-    */
-    
-    
     
     
     
