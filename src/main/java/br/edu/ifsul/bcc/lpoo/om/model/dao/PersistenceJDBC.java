@@ -6,8 +6,10 @@
 package br.edu.ifsul.bcc.lpoo.om.model.dao;
 
 import br.edu.ifsul.bcc.lpoo.om.model.Cargo;
+import br.edu.ifsul.bcc.lpoo.om.model.Cliente;
 import br.edu.ifsul.bcc.lpoo.om.model.Curso;
 import br.edu.ifsul.bcc.lpoo.om.model.Funcionario;
+import br.edu.ifsul.bcc.lpoo.om.model.Veiculo;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -266,6 +268,84 @@ public class PersistenceJDBC implements InterfacePersistence {
                         }
             }
 
+        }else if(o instanceof Cliente){
+            Cliente clin = (Cliente)o;
+            
+            if(clin.getObservacoes() == null){
+                //insert tb_pessoa DONE
+                PreparedStatement ps = this.con.prepareStatement("insert into tb_pessoa (tipo, cpf, cep, complemento, "
+                                                                + "data_nascimento, nome, senha) "
+                                                                + "values (?, ?, ?, ?, ?, ?, ?)");
+                ps.setString(1, clin.getTipo());
+                ps.setString(2, clin.getCpf());
+                ps.setString(3, clin.getCep());
+                ps.setString(4, clin.getComplemento());
+                ps.setDate(5, new java.sql.Date(clin.getData_nascimento().getTimeInMillis()));
+                ps.setString(6, clin.getNome());
+                ps.setString(7, clin.getSenha());
+
+                ps.execute();
+                ps.close();
+                
+                
+                //insert tb_cliente
+                PreparedStatement ps2 = this.con.prepareStatement("insert into tb_cliente (cpf, observacoes)"
+                                                                   + " values (?, 'inserido')"
+                                                                   + "returning observacoes");
+
+               
+               
+                ps2.setString(1, clin.getCpf());
+
+                ResultSet rs = ps2.executeQuery();
+
+                if (rs.next()) {
+                    
+                    clin.setObservacoes(rs.getString("observacoes"));
+
+                    //se necessário o insert em tb_funcionario_curso
+                    if (!clin.getVeiculo().isEmpty()) {
+
+                        for (Veiculo vei : clin.getVeiculo()) {
+                            
+                            PreparedStatement psc = this.con.prepareStatement("insert into tb_cliente_veiculo "
+                                                                            + "(cliente_cpf, veiculo_placa) values (?,?) ");
+
+                            psc.setString(1, clin.getCpf());
+                            psc.setString(2, vei.getPlaca());
+
+                            psc.execute();
+                            psc.close();
+                        }
+                    }
+
+                }
+                ps2.close();
+                
+            }
+        } 
+        else if (o instanceof Veiculo) {
+            Veiculo vei = (Veiculo)o;
+                if(vei.getDataUltimoServico()== null){
+                     PreparedStatement ps = this.con.prepareStatement("insert into tb_veiculo "
+                                                             + "(placa, ano, data_ultimo_servico, modelo) "
+                                                             + "values (?, ?, now(), ?)"
+                                                             + "returning data_ultimo_servico");
+                ps.setString(1, vei.getPlaca());
+                ps.setInt(2, vei.getAno());
+                ps.setString(3, vei.getModelo());
+                
+                 ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    
+                    Calendar dt_ult_serv = Calendar.getInstance();
+                    dt_ult_serv.setTimeInMillis(rs.getDate("data_ultimo_servico").getTime());
+                    vei.setDataUltimoServico(dt_ult_serv);
+                    
+                }
+                ps.close();
+                
+                }
         }
     }
 
@@ -299,6 +379,27 @@ public class PersistenceJDBC implements InterfacePersistence {
             //removendo linhas da tablea
             PreparedStatement ps3 = this.con.prepareStatement("delete from tb_pessoa where cpf = ?;");
             ps3.setString(1, f.getCpf());
+            ps3.execute();
+            ps3.close();
+        } else if (o instanceof Cliente){
+            
+            Cliente c = (Cliente)o;
+            
+            //removendo a associação com veiculo
+            PreparedStatement ps1 = this.con.prepareStatement("delete from tb_cliente_veiculo where cliente_cpf = ?;");
+            ps1.setString(1, c.getCpf());
+            ps1.execute();
+            ps1.close();
+            
+            //removendo linhas da tabela cliente
+            PreparedStatement ps2 = this.con.prepareStatement("delete from tb_cliente where cpf = ?;");
+            ps2.setString(1, c.getCpf());
+            ps2.execute();
+            ps2.close();
+            
+            //removendo linhas da tablea
+            PreparedStatement ps3 = this.con.prepareStatement("delete from tb_pessoa where cpf = ?;");
+            ps3.setString(1, c.getCpf());
             ps3.execute();
             ps3.close();
         }
@@ -405,4 +506,67 @@ public class PersistenceJDBC implements InterfacePersistence {
         return fcl;
     }
 
+    @Override
+    public Collection<Cliente> listCliente() throws Exception{
+        Collection<Cliente> ccl = null;
+                
+        PreparedStatement ps = this.con.prepareStatement("select p.cpf, p.nome, p.senha, "
+                                                        + "p.data_nascimento, p.cep, p.complemento, c.observacoes "
+                                                        + "from tb_pessoa p, tb_cliente c where "
+                                                        + "p.cpf = c.cpf order by cpf asc ");
+        
+        ResultSet rs = ps.executeQuery();
+        
+        ccl = new ArrayList();
+        
+        while(rs.next()){
+            Cliente cli = new Cliente();
+            cli.setCpf(rs.getString("cpf"));
+            cli.setNome(rs.getString("nome"));
+            cli.setSenha(rs.getString("senha"));
+            Calendar c = Calendar.getInstance();
+            c.setTimeInMillis(rs.getDate("data_nascimento").getTime());
+            cli.setData_nascimento(c);
+            cli.setCep(rs.getString("cep"));
+            cli.setComplemento(rs.getString("complemento"));
+            cli.setTipo("C");
+            cli.setObservacoes(rs.getString("observacoes"));
+            
+            
+            PreparedStatement ps2 = this.con.prepareStatement("select v.placa, v.ano, v.data_ultimo_servico, v.modelo"
+                                                            + " from tb_veiculo v, tb_cliente_veiculo tcv "
+                                                            + " where v.placa = tcv.veiculo_placa and "
+                                                            + "tcv.cliente_cpf = ? order by v.placa asc");
+            
+            ps2.setString(1, cli.getCpf());
+            
+            ResultSet rs2 = ps2.executeQuery();
+            
+            while(rs2.next()){
+                Veiculo vei = new Veiculo();
+                
+                vei.setPlaca(rs2.getString("placa"));
+                vei.setAno(rs2.getInt("ano"));
+                c.setTimeInMillis(rs2.getDate("data_ultimo_servico").getTime());
+                vei.setDataUltimoServico(c);
+                vei.setModelo(rs2.getString("modelo"));
+                
+                cli.setVeiculos(vei);
+                
+            }
+            rs2.close();
+            ps2.close();
+            
+            
+            
+            ccl.add(cli);
+
+        }
+        rs.close();
+        
+        ps.close();
+                
+                
+        return ccl;
+    }
 }

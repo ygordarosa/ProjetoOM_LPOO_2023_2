@@ -5,6 +5,7 @@
  */
 package br.edu.ifsul.bcc.lpoo.om.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
@@ -60,6 +61,13 @@ public class Cliente extends Pessoa {
      */
     public void setVeiculo(Collection<Veiculo> veiculo) {
         this.veiculo = veiculo;
+    }
+    
+    public void setVeiculos(Veiculo veiculo){
+        if(this.veiculo == null){
+            this.veiculo = new ArrayList();
+        }
+        this.veiculo.add(veiculo);
     }
     
     

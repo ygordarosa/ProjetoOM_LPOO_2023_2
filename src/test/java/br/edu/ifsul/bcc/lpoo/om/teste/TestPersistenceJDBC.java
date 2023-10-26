@@ -6,10 +6,14 @@
 package br.edu.ifsul.bcc.lpoo.om.teste;
 
 import br.edu.ifsul.bcc.lpoo.om.model.Cargo;
+import br.edu.ifsul.bcc.lpoo.om.model.Cliente;
 import br.edu.ifsul.bcc.lpoo.om.model.Curso;
 import br.edu.ifsul.bcc.lpoo.om.model.Funcionario;
+import br.edu.ifsul.bcc.lpoo.om.model.Veiculo;
 import br.edu.ifsul.bcc.lpoo.om.model.dao.PersistenceJDBC;
+import br.edu.ifsul.bcc.lpoo.om.model.dao.PersistenceJPA;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
 import org.junit.Test;
@@ -128,7 +132,7 @@ public class TestPersistenceJDBC {
         // Atividade 28/09
     
        // Criar um método de teste para funcionario
-    @Test
+    //@Test
     public void testListFuncionarioJDBC() throws Exception{
         PersistenceJDBC jdbc = new PersistenceJDBC();
         Collection<Funcionario> fcl = null;
@@ -272,6 +276,68 @@ public class TestPersistenceJDBC {
     
     
     
+    @Test
+    public void TestePersistenciaJDBC() throws Exception{
+        PersistenceJDBC jdbc = new PersistenceJDBC();
+
+        Collection<Cliente> cl = null;
+
+        if (jdbc.conexaoAberta()) {
+            
+            cl = jdbc.listCliente();
+            
+            if(!cl.isEmpty()){
+                
+                SimpleDateFormat formatadorData = new SimpleDateFormat("dd/MM/yyyy");        
+
+                
+                
+                for(Cliente cli : cl){
+                    System.out.println("cpf: " + cli.getCpf());
+                    System.out.println("Nome: " + cli.getNome());
+                    System.out.println("Cep: " + cli.getCep());
+                    System.out.println("Data Nascimento: " + formatadorData.format(cli.getData_nascimento().getTime()));
+                    for(Veiculo vei : cli.getVeiculo()){
+                        System.out.println("placa: " + vei.getPlaca());
+                        System.out.println("Ano: " + vei.getAno());
+                        System.out.println("Data Ultimo Servico: " + formatadorData.format(vei.getDataUltimoServico().getTime()));
+                        System.out.println("Modelo: " + vei.getModelo());
+                    }
+                }
+                
+                for(Cliente cli : cl){
+                    System.out.println("removendo o cpf: " + cli.getCpf());
+                    jdbc.remover(cli);
+                }
+                
+            }else{
+                Cliente c = new Cliente();
+            
+            c.setTipo("C");
+            c.setCpf("67241018089");
+            c.setCep("99020530");
+            c.setComplemento("Ao lado do antigo estádio delmar sitoni");
+            c.setData_nascimento(Calendar.getInstance());
+            c.setNome("Juliana da Rosa");
+            c.setSenha("bistoco");
+            
+            TestPersistenceJPA jpa = new TestPersistenceJPA();
+            
+            Veiculo vei = jpa.testCreateVeiculo();
+            if(vei != null){
+                jdbc.persist(vei);
+            }
+            c.setVeiculos(vei);
+            jdbc.persist(c);
+            System.out.println("criado cliente com sucesso com cpf: " + c.getCpf());
+            
+             
+            }
+           
+
+            jdbc.fecharConexao();
+        }
+    }
     
     
     

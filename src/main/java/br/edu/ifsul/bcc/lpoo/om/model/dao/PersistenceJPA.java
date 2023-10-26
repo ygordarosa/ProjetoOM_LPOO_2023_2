@@ -6,6 +6,7 @@
 package br.edu.ifsul.bcc.lpoo.om.model.dao;
 
 import br.edu.ifsul.bcc.lpoo.om.model.Cargo;
+import br.edu.ifsul.bcc.lpoo.om.model.Cliente;
 import br.edu.ifsul.bcc.lpoo.om.model.Funcionario;
 import java.util.Collection;
 import javax.persistence.EntityManager;
@@ -71,5 +72,11 @@ public class PersistenceJPA implements InterfacePersistence{
         return  entity.createNamedQuery("Funcionario.orderbynome").getResultList();
         
     }
+    
+    @Override
+        public Collection<Cliente> listCliente () throws Exception{
+            return entity.createNamedQuery("").getResultList();
+        }
+
     
 }

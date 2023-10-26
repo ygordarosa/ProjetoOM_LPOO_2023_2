@@ -6,8 +6,10 @@
 package br.edu.ifsul.bcc.lpoo.om.teste;
 
 import br.edu.ifsul.bcc.lpoo.om.model.Cargo;
+import br.edu.ifsul.bcc.lpoo.om.model.Cliente;
 import br.edu.ifsul.bcc.lpoo.om.model.Curso;
 import br.edu.ifsul.bcc.lpoo.om.model.Funcionario;
+import br.edu.ifsul.bcc.lpoo.om.model.Veiculo;
 import br.edu.ifsul.bcc.lpoo.om.model.dao.PersistenceJPA;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -219,6 +221,32 @@ public class TestPersistenceJPA {
         
     }
      
-     
+     public Veiculo testCreateVeiculo() throws Exception{
+        PersistenceJPA jpa = new PersistenceJPA();
+        
+        if(jpa.conexaoAberta()){
 
+        Veiculo vei = (Veiculo) jpa.find(Veiculo.class, new String("abcdef12"));
+         
+         if(vei == null){
+             vei = new Veiculo();
+             System.out.println("Criando veiculo");
+             vei.setPlaca("abcdef12");
+             vei.setModelo("uno");
+             vei.setAno(2020);
+             
+         }
+         
+         
+         return vei;
+        }
+        else {
+            System.out.println("não abriu conexão com bd");
+            return null;
+        }
+     }
+
+     
+     
+     
 }
