@@ -25,5 +25,5 @@ public interface InterfacePersistence {
     public Collection<Cargo> listCargo () throws Exception;
     public Collection<Funcionario> listFuncionario () throws Exception;
     public Collection<Cliente> listCliente () throws Exception;
-
+    public Funcionario doLogin(String cpf, String senha) throws Exception;
 }

@@ -569,4 +569,38 @@ public class PersistenceJDBC implements InterfacePersistence {
                 
         return ccl;
     }
+
+    @Override
+    public Funcionario doLogin(String cpf, String senha) throws Exception {        
+        Funcionario funcionario = null;        
+        PreparedStatement ps = 
+            this.con.prepareStatement("select p.cpf, data_nascimento, p.nome "
+                                        + " from tb_pessoa p "
+                                        + " where p.cpf = ? and p.senha = ? ");
+                        
+            ps.setString(1, cpf);
+            ps.setString(2, senha);
+            
+            ResultSet rs = ps.executeQuery();//o ponteiro do REsultSet inicialmente está na linha -1
+            
+            if(rs.next()){//se a matriz (ResultSet) tem uma linha
+
+                funcionario = new Funcionario();
+                funcionario.setCpf(rs.getString("cpf"));  
+                funcionario.setSenha(rs.getString("cpf"));
+                Calendar c = Calendar.getInstance();
+                c.setTimeInMillis(rs.getDate("data_nascimento").getTime());
+                funcionario.setData_nascimento(c);
+            }
+            ps.close();
+            
+            return funcionario;         
+    }
+
+
+
+
+
 }
+
+

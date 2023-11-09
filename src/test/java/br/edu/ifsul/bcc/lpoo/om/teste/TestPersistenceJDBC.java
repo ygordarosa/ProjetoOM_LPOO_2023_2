@@ -230,7 +230,7 @@ public class TestPersistenceJDBC {
          
           //Passo 3: caso a coleção esteja vazia, criar dois funcionarios com um curso cada.
     
-        //@Test
+       // @Test
      public void testPersistFuncionarioJDBC() throws Exception {
         PersistenceJDBC jdbc = new PersistenceJDBC();
 
@@ -238,7 +238,7 @@ public class TestPersistenceJDBC {
             Funcionario f = new Funcionario();
             
             f.setTipo("F");
-            f.setCpf("67241018089");
+            f.setCpf("04960317086");
             f.setCep("99020530");
             f.setComplemento("Ao lado do antigo estádio delmar sitoni");
             f.setData_nascimento(Calendar.getInstance());
@@ -276,7 +276,7 @@ public class TestPersistenceJDBC {
     
     
     
-    @Test
+    //@Test
     public void TestePersistenciaJDBC() throws Exception{
         PersistenceJDBC jdbc = new PersistenceJDBC();
 

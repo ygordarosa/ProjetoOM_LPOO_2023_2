@@ -78,5 +78,10 @@ public class PersistenceJPA implements InterfacePersistence{
             return entity.createNamedQuery("").getResultList();
         }
 
+    @Override
+    public Funcionario doLogin(String cpf, String senha) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     
 }
