@@ -576,7 +576,7 @@ public class PersistenceJDBC implements InterfacePersistence {
         PreparedStatement ps = 
             this.con.prepareStatement("select p.cpf, data_nascimento, p.nome "
                                         + " from tb_pessoa p "
-                                        + " where p.cpf = ? and p.senha = ? ");
+                                        + " where p.cpf = ? and p.senha = ? and p.tipo = 'F' ");
                         
             ps.setString(1, cpf);
             ps.setString(2, senha);

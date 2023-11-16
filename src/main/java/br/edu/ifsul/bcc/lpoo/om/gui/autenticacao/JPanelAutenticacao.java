@@ -58,7 +58,7 @@ public class JPanelAutenticacao extends JPanel implements ActionListener{
         posicionador.gridx = 0;// posição da coluna (horizontal)
         this.add(lblCPF, posicionador);//o add adiciona o rotulo no painel
     
-        txfCPF = new JTextField(10);
+        txfCPF = new JTextField(10);  //parte do zero
         txfCPF.setFocusable(true);    //acessibilidade    
         txfCPF.setToolTipText("txfCPF"); //acessibilidade
         //Util.considerarEnterComoTab(txfCPF);
