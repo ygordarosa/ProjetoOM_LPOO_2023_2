@@ -136,6 +136,13 @@ public class Funcionario extends Pessoa {
         }
         this.curso.add(curso);
     }
+    
+    
+    @Override
+    public String toString(){
+        
+        return this.getCpf();
+    }
 
   
 

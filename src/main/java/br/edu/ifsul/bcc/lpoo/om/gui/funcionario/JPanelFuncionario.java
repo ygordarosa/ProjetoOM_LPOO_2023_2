@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.edu.ifsul.bcc.lpoo.om.gui.funcionario;
 
 import br.edu.ifsul.bcc.lpoo.om.Controle;
@@ -11,55 +6,54 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author Ygor
+ * @author telmo
  */
 public class JPanelFuncionario extends JPanel {
-    
+
     private CardLayout cardLayout;
-    private Controle controle;
-    
+    private Controle  controle;
+
     private JPanelFuncionarioFormulario formulario;
     private JPanelFuncionarioListagem listagem;
-    
+
     public JPanelFuncionario(Controle controle){
-        
+
         this.controle = controle;
-        InitComponents();
-        
+        initComponents();
     }
-    
-    private void InitComponents(){
+
+    private void initComponents(){
+
         cardLayout = new CardLayout();
         this.setLayout(cardLayout);
-        
-        formulario = new JPanelFuncionarioFormulario(this, controle);
-        listagem = new JPanelFuncionarioListagem(this, controle);
-        
-        this.add(getFormulario(), "tela_funcionario_formulario");
+
+        formulario = new JPanelFuncionarioFormulario(controle, this);
+        listagem = new JPanelFuncionarioListagem(controle, this);
+
+        this.add(formulario, "tela_funcionario_formulario");
         this.add(listagem, "tela_funcionario_listagem");
+        
+        
+
     }
-    
-    
+
     public void showTela(String nomeTela){
-        
+
         if(nomeTela.equals("tela_funcionario_listagem")){
-            
-            //listagem.populaTable();
-            
+
+            listagem.populaTable();
+
         }else if(nomeTela.equals("tela_funcionario_formulario")){
-            
-           // getFormulario().populaComboCargo();
-            
+
+            getFormulario().populaComboCargo();
+
         }
-        
+
         cardLayout.show(this, nomeTela);
-        
+
     }
     
     
-    public Controle getControle() {
-        return controle;
-    }
     
     public JPanelFuncionarioFormulario getFormulario() {
         return formulario;
