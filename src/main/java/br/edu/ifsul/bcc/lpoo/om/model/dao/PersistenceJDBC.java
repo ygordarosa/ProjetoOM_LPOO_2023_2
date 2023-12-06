@@ -9,6 +9,7 @@ import br.edu.ifsul.bcc.lpoo.om.model.Cargo;
 import br.edu.ifsul.bcc.lpoo.om.model.Cliente;
 import br.edu.ifsul.bcc.lpoo.om.model.Curso;
 import br.edu.ifsul.bcc.lpoo.om.model.Funcionario;
+import br.edu.ifsul.bcc.lpoo.om.model.Servico;
 import br.edu.ifsul.bcc.lpoo.om.model.Veiculo;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -824,6 +825,10 @@ public class PersistenceJDBC implements InterfacePersistence {
             ps.close();
             
             return funcionario;         
+    }
+    
+    public Collection<Servico> listServico() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 

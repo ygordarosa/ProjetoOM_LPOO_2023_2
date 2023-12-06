@@ -8,6 +8,7 @@ package br.edu.ifsul.bcc.lpoo.om;
 import br.edu.ifsul.bcc.lpoo.om.gui.JFramePrincipal;
 import br.edu.ifsul.bcc.lpoo.om.gui.JMenuBarHome;
 import br.edu.ifsul.bcc.lpoo.om.gui.JPanelHome;
+import br.edu.ifsul.bcc.lpoo.om.gui.Servico.JPanelServico;
 import br.edu.ifsul.bcc.lpoo.om.gui.autenticacao.JPanelAutenticacao;
 import br.edu.ifsul.bcc.lpoo.om.gui.funcionario.JPanelFuncionario;
 import br.edu.ifsul.bcc.lpoo.om.gui.peca.JPanelPeca;
@@ -28,6 +29,7 @@ public class Controle {
     private JPanelHome  telaHome;
     private JPanelFuncionario telaFuncionario;
     private JPanelPeca telaPeca;
+    private JPanelServico telaServico;
     
     public Controle() {
     }
@@ -60,6 +62,8 @@ public class Controle {
          
          telaPeca = new JPanelPeca(this);
          
+         telaServico = new JPanelServico(this);
+         
          //adicionando no baralho a tela de autenticacao
          jframe.addTela(telaAutenticacao, "tela_autenticacao");
          
@@ -68,6 +72,8 @@ public class Controle {
          jframe.addTela(telaFuncionario, "tela_funcionario");
          
          jframe.addTela(telaPeca, "tela_peca");
+         
+         jframe.addTela(telaServico, "tela_servico");
          
          jframe.showTela("tela_autenticacao");
          jframe.setVisible(true); //mostra o JFrame
@@ -113,6 +119,8 @@ public class Controle {
             
          }else if(nomeTela.equals("tela_peca")){
              telaPeca.showTela("tela_peca_listagem");
+         }else if(nomeTela.equals("tela_servico")){
+             telaServico.showTela("tela_servico_listagem");
          }
          
          jframe.showTela(nomeTela);
