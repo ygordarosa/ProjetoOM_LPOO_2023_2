@@ -6,7 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collection;
-import java.util.List;
+import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -20,7 +20,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author telmo
  */
-public class JPanelFuncionarioListagem extends JPanel implements ActionListener {
+public class JPanelFuncionarioListagem extends JPanel implements ActionListener{
     
     private JPanel pnlNorte;
     private JLabel lblFiltro;
@@ -28,13 +28,11 @@ public class JPanelFuncionarioListagem extends JPanel implements ActionListener 
     private JButton btnFiltro;
     private FlowLayout layoutFlowNorte;
     
-
     private JPanel pnlCentro;
     private JScrollPane scpCentro;
     private DefaultTableModel modeloTabela;
     private JTable tabela;
     private BorderLayout layoutBorderCentro;
-    
     
     private JPanel pnlSul;
     private JButton btnNovo;
@@ -44,9 +42,6 @@ public class JPanelFuncionarioListagem extends JPanel implements ActionListener 
     
     private BorderLayout layoutBorder;
     
-
-    
-    
     public Controle controle;
     public JPanelFuncionario pnlFuncionario;
 
@@ -54,75 +49,23 @@ public class JPanelFuncionarioListagem extends JPanel implements ActionListener 
         this.controle = controle;
         this.pnlFuncionario = pnlFuncionario;
         
-        initComponents();
+       initComponents();
     }
     
-    public void populaTable(){
-        
-        DefaultTableModel model =  (DefaultTableModel) tabela.getModel();//recuperacao do modelo da tabela
-
-        model.setRowCount(0);//elimina as linhas existentes (reset na tabela)
-
-        try {
-
-            Collection<Funcionario> listFuncionarios = controle.getConexaoJDBC().listFuncionario();
-            for(Funcionario f : listFuncionarios){
-                                
-                model.addRow(new Object[]{f,  //por ser apenas o objeto funcinario ele chama o toString()                                       
-                                          f.getNome(), 
-                                          });
-
-            }
-
-        } catch (Exception ex) {
-
-            JOptionPane.showMessageDialog(this, "Erro ao listar Funcionarios -:"+ex.getLocalizedMessage(), "Jogadores", JOptionPane.ERROR_MESSAGE);
-            ex.printStackTrace();
-        }        
-        
-    }
-
     private void initComponents(){
-        
         layoutBorder = new BorderLayout();
-        this.setLayout(layoutBorder);//seta o gerenciado border para este painel
+        this.setLayout(layoutBorder);
         
-        layoutFlowNorte = new FlowLayout();
-        
-        pnlNorte = new JPanel();
-        pnlNorte.setLayout(layoutFlowNorte);
-        
-        lblFiltro = new JLabel("Filtar por CPF: ");
-        pnlNorte.add(lblFiltro);
-        
-        txtFiltro = new JTextField(11);
-        pnlNorte.add(txtFiltro);
-        
-        btnFiltro = new JButton("Filtrar");
-        btnFiltro.addActionListener(this);
-        btnFiltro.setFocusable(true);    //acessibilidade    
-        btnFiltro.setToolTipText("btnFiltrar"); //acessibilidade  
-        btnFiltro.setActionCommand("botao_filtro");
-        pnlNorte.add(btnFiltro);
-        
-        
-        
-        this.add(pnlNorte, BorderLayout.NORTH);
-        
-        
-        
-        
-        tabela = new JTable();
         pnlCentro = new JPanel();
         layoutBorderCentro = new BorderLayout();
         pnlCentro.setLayout(layoutBorderCentro);
-        
+        tabela = new JTable();
         
         modeloTabela = new DefaultTableModel(
-        new String [] {"CPF", "Nome"}, 0);
-        
+          new String [] {
+                  "CPF", "Nome"}, 0);
+          
         tabela.setModel(modeloTabela);
-        
         
         scpCentro = new JScrollPane();
         scpCentro.setViewportView(tabela);
@@ -130,42 +73,107 @@ public class JPanelFuncionarioListagem extends JPanel implements ActionListener 
         
         this.add(pnlCentro, BorderLayout.CENTER);
         
-        layoutFlowSul = new FlowLayout();
         pnlSul = new JPanel();
+        layoutFlowSul = new FlowLayout();
         pnlSul.setLayout(layoutFlowSul);
         
-        btnNovo = new JButton ("Novo");
+        btnNovo = new JButton("Novo");
+        btnNovo.setActionCommand("comando_novo");
         btnNovo.addActionListener(this);
-        btnNovo.setFocusable(true);
-        btnNovo.setToolTipText("btnNovo");
-        btnNovo.setActionCommand("botao_novo");
         pnlSul.add(btnNovo);
         
-        btnEditar = new JButton ("Editar");
+        btnEditar = new JButton("Editar");
+        btnEditar.setActionCommand("comando_editar");
         btnEditar.addActionListener(this);
-        btnEditar.setFocusable(true);
-        btnEditar.setToolTipText("btnEditar");
-        btnEditar.setActionCommand("botao_editar");
         pnlSul.add(btnEditar);
         
-        btnRemover = new JButton ("Remover");
-        btnRemover.addActionListener(this);
-        btnRemover.setFocusable(true);
-        btnRemover.setToolTipText("btnRemover");
-        btnRemover.setActionCommand("botao_remover");
+        btnRemover = new JButton("Remover");
+        btnRemover.setActionCommand("comando_remover");
+        btnRemover.addActionListener(this);           
         pnlSul.add(btnRemover);
         
-        
         this.add(pnlSul, BorderLayout.SOUTH);
-
+    }
+    
+     public void populaTable() throws Exception{
         
+        DefaultTableModel model =  (DefaultTableModel) tabela.getModel();//recuperacao do modelo da tabela
+
+        model.setRowCount(0);//elimina as linhas existentes (reset na tabela)
+
+      
+
+            Collection<Funcionario> listFuncionarios =  controle.getConexaoJDBC().listFuncionario();
+
+            for(Funcionario f : listFuncionarios){
+                               
+                model.addRow(new Object[]{f, //chame o toString
+                                          f.getNome() 
+                                          });
+
+            }
+
+             
         
     }
 
     @Override
-    public void actionPerformed(ActionEvent arg0) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void actionPerformed(ActionEvent ae) {
+        
+        if(ae.getActionCommand().equals(btnNovo.getActionCommand())){
+            
+            pnlFuncionario.showTela("tela_funcionario_formulario");            
+            
+            pnlFuncionario.getFormulario().
+                    setFuncionarioFormulario(null); //limpando o formulário.                        
+
+        }else if(ae.getActionCommand().equals(btnEditar.getActionCommand())){
+            
+            
+            int indice = tabela.getSelectedRow();//recupera a linha selecionada
+            if(indice > -1){
+
+                DefaultTableModel model =  (DefaultTableModel) tabela.getModel(); //recuperacao do modelo da table
+
+                Vector linha = (Vector) model.getDataVector().get(indice);//recupera o vetor de dados da linha selecionada
+
+                Funcionario f = (Funcionario) linha.get(0); //model.addRow(new Object[]{u, u.getNome(), ...
+
+                pnlFuncionario.showTela("tela_funcionario_formulario");
+                pnlFuncionario.getFormulario().setFuncionarioFormulario(f); 
+
+            }else{
+                  JOptionPane.showMessageDialog(this, "Selecione uma linha para editar!", "Edição", JOptionPane.INFORMATION_MESSAGE);
+            }
+            
+            
+        }else if(ae.getActionCommand().equals(btnRemover.getActionCommand())){
+            
+            int indice = tabela.getSelectedRow();//recupera a linha selecionada
+            if(indice > -1){
+
+                DefaultTableModel model =  (DefaultTableModel) tabela.getModel(); //recuperacao do modelo da table
+
+                Vector linha = (Vector) model.getDataVector().get(indice);//recupera o vetor de dados da linha selecionada
+
+                Funcionario f = (Funcionario) linha.get(0); //model.addRow(new Object[]{u, u.getNome(), ...
+
+                try {
+                    pnlFuncionario.getControle().getConexaoJDBC().remover(f);
+                    JOptionPane.showMessageDialog(this, "Funcionario removido!", "Funcionario", JOptionPane.INFORMATION_MESSAGE);
+                    populaTable(); //refresh na tabela
+
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "Erro ao remover Funcionario -:"+ex.getLocalizedMessage(), "Funcionario", JOptionPane.ERROR_MESSAGE);
+                    ex.printStackTrace();
+                }                        
+
+            }else{
+                  JOptionPane.showMessageDialog(this, "Selecione uma linha para remover!", "Remoção", JOptionPane.INFORMATION_MESSAGE);
+            }
+            
+        }
     }
-
-
+    
+    
 }

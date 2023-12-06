@@ -6,6 +6,7 @@
 package br.edu.ifsul.bcc.lpoo.om.model;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -49,7 +50,11 @@ public abstract class Pessoa implements Serializable {
     @Transient
     private String tipo;
     
+    @Transient
+    private SimpleDateFormat sdf;
+    
     public Pessoa() {
+        sdf = new SimpleDateFormat("dd/MM/yyyy");
     }
 
     /**
@@ -142,6 +147,30 @@ public abstract class Pessoa implements Serializable {
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
+    }
+    
+    public String getData_nascimento_string() {
+        if(this.data_nascimento != null){
+            return this.data_nascimento.get(Calendar.DAY_OF_MONTH) + "/"+
+                   this.data_nascimento.get(Calendar.MONTH) + "/"+
+                   this.data_nascimento.get(Calendar.YEAR); 
+        }else{
+            return "";
+        }
+
+    }
+    
+    public void setData_nascimento(String data_admmissao){
+
+        try{
+             this.data_nascimento = Calendar.getInstance();
+             this.data_nascimento.setTimeInMillis(sdf.parse(data_admmissao).getTime());
+
+        }catch(Exception e){
+
+            this.data_nascimento = null;
+        }
+
     }
 
 }

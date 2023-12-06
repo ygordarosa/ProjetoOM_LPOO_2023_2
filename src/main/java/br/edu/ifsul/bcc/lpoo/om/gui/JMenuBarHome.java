@@ -27,6 +27,7 @@ public class JMenuBarHome extends JMenuBar implements ActionListener {
     private JMenu menuCadastro;
     private JMenuItem menuItemFuncionario;    
     private JMenuItem menuItemFuncionarioDesigner;   
+    private JMenuItem menuItemPeca;
 
     private Controle controle;
     
@@ -80,24 +81,29 @@ public class JMenuBarHome extends JMenuBar implements ActionListener {
                    
         menuItemFuncionarioDesigner.addActionListener(this);
         menuItemFuncionarioDesigner.setActionCommand("menu_funcionario_designer");
-        menuCadastro.add(menuItemFuncionarioDesigner);              
-
+        menuCadastro.add(menuItemFuncionarioDesigner);  
+        
+        menuItemPeca = new JMenuItem("Peça");
+        menuItemPeca.setToolTipText("Peça"); //acessibilidade
+        menuItemPeca.setFocusable(true); //acessibilidade
+        
+        menuItemPeca.addActionListener(this);
+        menuItemPeca.setActionCommand("menu_peca");
+        menuCadastro.add(menuItemPeca); 
+        
         this.add(menuArquivo);
-        this.add(menuCadastro);
-    }
+        this.add(menuCadastro);    }
     
     @Override
     public void actionPerformed(ActionEvent e) {
        
         if(e.getActionCommand().equals(menuItemSair.getActionCommand())){
         
-            //se o usuario clicou no menuitem Sair
-            int d = JOptionPane.showConfirmDialog(this, "Deseja realmente sair do sistema? ", "Sair", JOptionPane.YES_NO_OPTION);
-            if(d == 0){                
-                //->controle.fecharBD();//fecha a conexao com o banco de dados.
-                System.exit(0);//finaliza o processo do programa.
+            int decisao = JOptionPane.showConfirmDialog(this, "Deseja realmente sair ?");
+            if(decisao == 0){
+                controle.getConexaoJDBC().fecharConexao();
+                System.exit(0);
             }
-            
             
         }else if(e.getActionCommand().equals(menuItemFuncionario.getActionCommand())){
             
@@ -110,6 +116,10 @@ public class JMenuBarHome extends JMenuBar implements ActionListener {
         }else if(e.getActionCommand().equals(menuItemFuncionarioDesigner.getActionCommand())){
             
                         //controle.showTela("tela_jogador_designer");
+        }else if(e.getActionCommand().equals(menuItemPeca.getActionCommand())){
+            
+                       controle.showTela("tela_peca");
+                        
         }
         
         

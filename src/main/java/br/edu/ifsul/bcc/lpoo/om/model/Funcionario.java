@@ -5,6 +5,7 @@
  */
 package br.edu.ifsul.bcc.lpoo.om.model;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -38,7 +39,7 @@ public class Funcionario extends Pessoa {
 
     @Column(nullable = false)
     @Temporal(TemporalType.DATE)
-    private Calendar data_admmissao;
+    private Calendar data_admissao;
 
     @Column(nullable = true)
     @Temporal(TemporalType.DATE)
@@ -53,11 +54,15 @@ public class Funcionario extends Pessoa {
                                        inverseJoinColumns = {@JoinColumn(name = "curso_id")})  
     private Collection<Curso> curso;
      
-     
-     
+     @Transient
+    private SimpleDateFormat sdf;
 
     public Funcionario() {
+        sdf = new SimpleDateFormat("dd/MM/yyyy");
     }
+     
+
+    
     
     
     /**
@@ -78,14 +83,14 @@ public class Funcionario extends Pessoa {
      * @return the data_admissao
      */
     public Calendar getData_admissao() {
-        return data_admmissao;
+        return data_admissao;
     }
 
     /**
      * @param data_admissao the data_admissao to set
      */
     public void setData_admissao(Calendar data_admissao) {
-        this.data_admmissao = data_admissao;
+        this.data_admissao = data_admissao;
     }
 
     /**
@@ -143,7 +148,42 @@ public class Funcionario extends Pessoa {
         
         return this.getCpf();
     }
+    
+    public void setData_admmissao(String data_admmissao){
 
+        try{
+             this.data_admissao = Calendar.getInstance();
+             this.data_admissao.setTimeInMillis(sdf.parse(data_admmissao).getTime());
+
+        }catch(Exception e){
+
+            this.data_admissao = null;
+        }
+
+    }
+    
+    public void setData_demissaoString(String data_demissao) {
+        try{
+             this.data_demissao = Calendar.getInstance();
+             this.data_demissao.setTimeInMillis(sdf.parse(data_demissao).getTime());
+
+        }catch(Exception e){
+
+            this.data_demissao = null;
+        }
+
+    }
+    
+     public String getData_admmissao_string() {
+        if(this.data_admissao != null){
+            return this.data_admissao.get(Calendar.DAY_OF_MONTH) + "/"+
+                   (this.data_admissao.get(Calendar.MONTH) + 1) + "/"+
+                   this.data_admissao.get(Calendar.YEAR); 
+        }else{
+            return "";
+        }
+        
+    }
   
 
 
