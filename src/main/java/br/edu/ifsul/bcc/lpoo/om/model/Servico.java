@@ -6,6 +6,7 @@
 package br.edu.ifsul.bcc.lpoo.om.model;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
@@ -23,6 +24,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 /**
  *
@@ -62,7 +64,15 @@ public class Servico implements Serializable{
     @Enumerated(EnumType.STRING)
     private StatusServico status;
 
+    
+    @Transient
+    private SimpleDateFormat sdf;
+    
+       
+    
+
     public Servico() {
+         sdf = new SimpleDateFormat("dd/MM/yyyy");
     }
 
     
@@ -184,6 +194,59 @@ public class Servico implements Serializable{
      public String toString(){
         
         return String.valueOf(this.getId());
+    }
+     
+     
+     public void setData_inicio(String data_admmissao){
+
+        try{
+             this.data_inicio = Calendar.getInstance();
+             this.data_inicio.setTimeInMillis(sdf.parse(data_admmissao).getTime());
+
+        }catch(Exception e){
+
+            this.data_inicio = null;
+        }
+
+    }
+     
+     public void setData_fim(String data_admmissao){
+
+        try{
+             this.data_fim = Calendar.getInstance();
+             this.data_fim.setTimeInMillis(sdf.parse(data_admmissao).getTime());
+
+        }catch(Exception e){
+
+            this.data_fim = null;
+        }
+
+    }
+     
+     
+
+    
+     public String getData_inicio_string() {
+        if(this.data_inicio != null){
+            return this.data_inicio.get(Calendar.DAY_OF_MONTH) + "/"+
+                   (this.data_inicio.get(Calendar.MONTH) + 1) + "/"+
+                   this.data_inicio.get(Calendar.YEAR); 
+        }else{
+            return "";
+        }
+        
+    }
+     
+      
+     public String getData_fim_string() {
+        if(this.data_fim != null){
+            return this.data_fim.get(Calendar.DAY_OF_MONTH) + "/"+
+                   (this.data_fim.get(Calendar.MONTH) + 1) + "/"+
+                   this.data_fim.get(Calendar.YEAR); 
+        }else{
+            return "";
+        }
+        
     }
     
 }

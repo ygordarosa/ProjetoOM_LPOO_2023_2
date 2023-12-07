@@ -6,14 +6,17 @@
 package br.edu.ifsul.bcc.lpoo.om.gui.Servico;
 
 import br.edu.ifsul.bcc.lpoo.om.Controle;
+import br.edu.ifsul.bcc.lpoo.om.model.Funcionario;
 import br.edu.ifsul.bcc.lpoo.om.model.Servico;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collection;
+import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -124,10 +127,28 @@ public class JPanelServicoListagem extends JPanel implements ActionListener {
             
             pnlServico.showTela("tela_servico_formulario");            
             
-            pnlServico.getFormulario();
-                  //  setFuncionarioFormulario(null); //limpando o formulário.                        
+            pnlServico.getFormulario().
+            setServicoFormulario(null); //limpando o formulário.                        
 
-        }
+        }else if(ae.getActionCommand().equals(btnEditar.getActionCommand())){
+            
+            
+            int indice = table.getSelectedRow();//recupera a linha selecionada
+            if(indice > -1){
+
+                DefaultTableModel model =  (DefaultTableModel) table.getModel(); //recuperacao do modelo da table
+
+                Vector linha = (Vector) model.getDataVector().get(indice);//recupera o vetor de dados da linha selecionada
+
+                Servico s = (Servico) linha.get(0); //model.addRow(new Object[]{u, u.getNome(), ...
+
+                pnlServico.showTela("tela_servico_formulario");
+                pnlServico.getFormulario().setServicoFormulario(s); 
+
+            }else{
+                  JOptionPane.showMessageDialog(this, "Selecione uma linha para editar!", "Edição", JOptionPane.INFORMATION_MESSAGE);
+            }
+    }
     }
     
 }

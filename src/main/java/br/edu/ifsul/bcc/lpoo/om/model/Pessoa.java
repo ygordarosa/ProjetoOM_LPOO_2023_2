@@ -41,10 +41,10 @@ public abstract class Pessoa implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar data_nascimento;
     
-    @Column(nullable = false, length = 8)
+    @Column(nullable = true, length = 8)
     private String cep;
     
-    @Column(nullable = false, length = 100)
+    @Column(nullable = true, length = 100)
     private String complemento;
 
     @Transient
