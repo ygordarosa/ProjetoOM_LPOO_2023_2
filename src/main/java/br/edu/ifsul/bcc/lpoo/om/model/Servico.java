@@ -179,4 +179,11 @@ public class Servico implements Serializable{
         this.status = statusServico;
     }
     
+    
+    @Override
+     public String toString(){
+        
+        return String.valueOf(this.getId());
+    }
+    
 }

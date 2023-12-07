@@ -84,17 +84,17 @@ public class JPanelServicoListagem extends JPanel implements ActionListener {
         layoutFlowSul = new FlowLayout();
         pnlSul.setLayout(layoutFlowSul);
         
-        btnNovo = new JButton();
+        btnNovo = new JButton("Novo");
         btnNovo.setActionCommand("comando_novo");
         btnNovo.addActionListener(this);
         pnlSul.add(btnNovo);
         
-        btnEditar = new JButton();
+        btnEditar = new JButton("Editar");
         btnEditar.setActionCommand("comando_editar");
         btnEditar.addActionListener(this);
         pnlSul.add(btnEditar);
         
-        btnRemover = new JButton();
+        btnRemover = new JButton("Remover");
         btnRemover.setActionCommand("comando_remover");
         btnRemover.addActionListener(this);
         pnlSul.add(btnRemover);
@@ -102,9 +102,9 @@ public class JPanelServicoListagem extends JPanel implements ActionListener {
         this.add(pnlSul, BorderLayout.SOUTH);
     }
 
-    public void PopulaTable(){
+    public void populaTable() throws Exception{
         DefaultTableModel model = (DefaultTableModel) table.getModel();
-        
+        System.out.println("entrou popula table");
         model.setRowCount(0);
         
         
@@ -119,8 +119,15 @@ public class JPanelServicoListagem extends JPanel implements ActionListener {
     
     
     @Override
-    public void actionPerformed(ActionEvent arg0) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void actionPerformed(ActionEvent ae) {
+        if(ae.getActionCommand().equals(btnNovo.getActionCommand())){
+            
+            pnlServico.showTela("tela_servico_formulario");            
+            
+            pnlServico.getFormulario();
+                  //  setFuncionarioFormulario(null); //limpando o formulário.                        
+
+        }
     }
     
 }

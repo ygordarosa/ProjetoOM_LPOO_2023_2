@@ -28,6 +28,8 @@ public class JMenuBarHome extends JMenuBar implements ActionListener {
     private JMenuItem menuItemFuncionario;    
     private JMenuItem menuItemFuncionarioDesigner;   
     private JMenuItem menuItemPeca;
+    private JMenuItem menuItemServico;
+    
 
     private Controle controle;
     
@@ -91,6 +93,14 @@ public class JMenuBarHome extends JMenuBar implements ActionListener {
         menuItemPeca.setActionCommand("menu_peca");
         menuCadastro.add(menuItemPeca); 
         
+        menuItemServico = new JMenuItem("Serviço");
+        menuItemServico.setToolTipText("Serviço");
+        menuItemServico.setFocusable(true);
+        
+        menuItemServico.addActionListener(this);
+        menuItemServico.setActionCommand("menu_servico");
+        menuCadastro.add(menuItemServico);
+        
         this.add(menuArquivo);
         this.add(menuCadastro);    }
     
@@ -119,6 +129,10 @@ public class JMenuBarHome extends JMenuBar implements ActionListener {
         }else if(e.getActionCommand().equals(menuItemPeca.getActionCommand())){
             
                        controle.showTela("tela_peca");
+                        
+        }else if(e.getActionCommand().equals(menuItemServico.getActionCommand())){
+            
+                       controle.showTela("tela_servico");
                         
         }
         

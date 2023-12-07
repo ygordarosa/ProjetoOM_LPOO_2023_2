@@ -682,7 +682,6 @@ public class PersistenceJDBC implements InterfacePersistence {
     @Override
     public Collection<Funcionario> listFuncionario() throws Exception {
         Collection<Funcionario> colecaoRetorno = null;
-        System.out.println("entrou dentro do listFunc");
         PreparedStatement ps = this.con.prepareStatement("select p.nome, p.senha, p.cpf, p.data_nascimento, f.data_admissao, f.numero_ctps, c.id, c.descricao from tb_pessoa p, "
                                                                     + "tb_funcionario f left join tb_cargo c on (f.cargo_id=c.id) where p.cpf=f.cpf");  
         /* PreparedStatement ps = this.con.prepareStatement("select p.cpf, p.nome, p.senha, "
@@ -691,7 +690,7 @@ public class PersistenceJDBC implements InterfacePersistence {
                                                         + "from tb_pessoa p, tb_funcionario f, tb_cargo c where "
                                                         + "p.cpf = f.cpf and f.cargo_id = c.id order by cpf asc "); */
         ResultSet rs = ps.executeQuery();//executa o sql e retorna
-        System.out.println("saiu do prepared statemant");
+       
         colecaoRetorno = new ArrayList();//inicializa a collecao
         
         while(rs.next()){//percorre o ResultSet
@@ -826,9 +825,57 @@ public class PersistenceJDBC implements InterfacePersistence {
             
             return funcionario;         
     }
-    
-    public Collection<Servico> listServico() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    @Override
+    public Collection<Servico> listServico() throws Exception {
+        Collection<Servico> ccs = null;
+        /* SELECT id, data_fim, data_inicio, status, valor, equipe_id, orcamento_id
+	FROM public.tb_servico;*/
+        PreparedStatement ps = this.con.prepareStatement("select id, data_fim, data_inicio, status, valor, equipe_id, orcamento_id from "
+                                                                    + "tb_servico");
+        
+        ResultSet rs = ps.executeQuery();//executa o sql e retorna
+       
+        ccs = new ArrayList();//inicializa a collecao
+        
+        while(rs.next()){//percorre o ResultSet
+            Servico serv = new Servico();//inicializa
+            serv.setId(rs.getInt("id"));
+            serv.setValor(rs.getFloat("valor"));
+            
+            Calendar c = Calendar.getInstance();
+            c.setTimeInMillis(rs.getDate("data_fim").getTime());
+            serv.setData_fim(c);
+            
+            Calendar d = Calendar.getInstance();
+            d.setTimeInMillis(rs.getDate("data_inicio").getTime());
+            serv.setData_fim(d);
+            
+          
+            
+            //seta as informações do rs
+            /*
+            PreparedStatement ps2 = this.con.prepareStatement("selecte ... from tb_funcionario_cur");
+            ResultSet rs2 = ps.executeQuery();//executa o sql e retorna
+            Collection<Curso> colecaoCursos = new ArrayList();
+            while(rs2.next()){
+                Curso crs = new Curso();
+                
+                colecaoCursos.add(crs);
+            }
+            rs2.close();
+            
+            func.setCursos(colecaoCursos);
+            */
+            
+            ccs.add(serv);//adiciona na colecao
+        }
+        
+        ps.close();
+        
+        
+        
+        
+        return ccs;
     }
 
 

@@ -48,11 +48,11 @@ public class JPanelServico extends JPanel  {
         
         try{
             
-            if(nomeTela.equals("tela_funcionario_listagem")){
-                
-              //  listagem.populaTable();
+            if(nomeTela.equals("tela_servico_listagem")){
+                System.out.println("entrou no show de servico");
+                listagem.populaTable();
 
-            }else if(nomeTela.equals("tela_funcionario_formulario")){
+            }else if(nomeTela.equals("tela_servico_formulario")){
                 
                 //getFormulario().populaComboCargo();
 
