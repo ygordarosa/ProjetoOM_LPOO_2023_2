@@ -8,6 +8,7 @@ package br.edu.ifsul.bcc.lpoo.om.model.dao;
 import br.edu.ifsul.bcc.lpoo.om.model.Cargo;
 import br.edu.ifsul.bcc.lpoo.om.model.Cliente;
 import br.edu.ifsul.bcc.lpoo.om.model.Funcionario;
+import br.edu.ifsul.bcc.lpoo.om.model.MaoObra;
 import br.edu.ifsul.bcc.lpoo.om.model.Servico;
 import java.util.Collection;
 import javax.persistence.EntityManager;
@@ -86,6 +87,11 @@ public class PersistenceJPA implements InterfacePersistence{
 
     @Override
     public Collection<Servico> listServico() throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Collection<MaoObra> listMaoObras(String filtro) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

@@ -30,6 +30,9 @@ public class JMenuBarHome extends JMenuBar implements ActionListener {
     private JMenuItem menuItemPeca;
     private JMenuItem menuItemServico;
     
+    private JMenu menuListagem;
+    private JMenuItem menuItemListagemMaoObra;
+    
 
     private Controle controle;
     
@@ -101,8 +104,23 @@ public class JMenuBarHome extends JMenuBar implements ActionListener {
         menuItemServico.setActionCommand("menu_servico");
         menuCadastro.add(menuItemServico);
         
+        menuListagem = new JMenu("Listagem");
+        menuListagem.setMnemonic(KeyEvent.VK_A);//ativa o ALT + A para acessar esse menu - acessibilidade
+        menuListagem.setToolTipText("Listagem"); //acessibilidade
+        menuListagem.setFocusable(true); //acessibilidade
+        
+        menuItemListagemMaoObra = new JMenuItem("Mão de Obra");
+        menuItemListagemMaoObra.setToolTipText("Mão de Obra");
+        menuItemListagemMaoObra.setFocusable(true);
+        
+        menuItemListagemMaoObra.addActionListener(this);
+        menuItemListagemMaoObra.setActionCommand("menu_listagem_maoobra");
+        menuListagem.add(menuItemListagemMaoObra);
+        
         this.add(menuArquivo);
-        this.add(menuCadastro);    }
+        this.add(menuCadastro);  
+        this.add(menuListagem);
+}
     
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -133,6 +151,10 @@ public class JMenuBarHome extends JMenuBar implements ActionListener {
         }else if(e.getActionCommand().equals(menuItemServico.getActionCommand())){
             
                        controle.showTela("tela_servico");
+                        
+        }else if(e.getActionCommand().equals(menuItemListagemMaoObra.getActionCommand())){
+            
+                       controle.showTela("tela_listagem_maoobra");
                         
         }
         

@@ -11,6 +11,7 @@ import br.edu.ifsul.bcc.lpoo.om.gui.JPanelHome;
 import br.edu.ifsul.bcc.lpoo.om.gui.Servico.JPanelServico;
 import br.edu.ifsul.bcc.lpoo.om.gui.autenticacao.JPanelAutenticacao;
 import br.edu.ifsul.bcc.lpoo.om.gui.funcionario.JPanelFuncionario;
+import br.edu.ifsul.bcc.lpoo.om.gui.maoObra.JPanelMaoObraListagem;
 import br.edu.ifsul.bcc.lpoo.om.gui.peca.JPanelPeca;
 import br.edu.ifsul.bcc.lpoo.om.model.Funcionario;
 import br.edu.ifsul.bcc.lpoo.om.model.dao.PersistenceJDBC;
@@ -30,6 +31,7 @@ public class Controle {
     private JPanelFuncionario telaFuncionario;
     private JPanelPeca telaPeca;
     private JPanelServico telaServico;
+    private JPanelMaoObraListagem telaListagemMaoObra;
     
     public Controle() {
     }
@@ -64,6 +66,8 @@ public class Controle {
          
          telaServico = new JPanelServico(this);
          
+         telaListagemMaoObra = new JPanelMaoObraListagem(this);
+         
          //adicionando no baralho a tela de autenticacao
          jframe.addTela(telaAutenticacao, "tela_autenticacao");
          
@@ -74,6 +78,8 @@ public class Controle {
          jframe.addTela(telaPeca, "tela_peca");
          
          jframe.addTela(telaServico, "tela_servico");
+         
+         jframe.addTela(telaListagemMaoObra, "tela_listagem_maoobra");
          
          jframe.showTela("tela_autenticacao");
          jframe.setVisible(true); //mostra o JFrame
@@ -121,6 +127,8 @@ public class Controle {
              telaPeca.showTela("tela_peca_listagem");
          }else if(nomeTela.equals("tela_servico")){
              telaServico.showTela("tela_servico_listagem");
+         }else if(nomeTela.equals("tela_listagem_maoobra")){
+             telaListagemMaoObra.showTela();
          }
          
          jframe.showTela(nomeTela);

@@ -100,5 +100,11 @@ public class MaoObra implements Serializable {
         this.valor = valor;
     }
     
+     @Override
+     public String toString(){
+        
+        return String.valueOf(this.getId());
+    }
+    
     
 }
